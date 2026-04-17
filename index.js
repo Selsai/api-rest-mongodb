@@ -12,14 +12,16 @@ const {
 const userLogin = require('./src/routes/user-route');
 const { authMdlr } = require('./src/middlewares/auth');
 
-// ← SEEDER UTILISATEUR
+// ← SEEDERS
 const { createFirstUser } = require('./src/db/create-first-user');
+const { createPokemons } = require('./src/db/create-pokemons');
 
 // Connexion MongoDB
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/PokemonDB')  
-    .then(() => {
+  .then(() => {
     console.log('✅ MongoDB connecté');
     createFirstUser();
+    createPokemons();
   })
   .catch(err => console.error('❌ MongoDB erreur:', err));
 
