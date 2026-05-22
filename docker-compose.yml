@@ -1,0 +1,46 @@
+services:
+  app:
+    build: .
+    container_name: pokemon_app
+    environment:
+      - MONGODB_URI=mongodb://db:27017/PokemonDB
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - pokemon_network
+    depends_on:
+      - db
+
+  db:
+    image: mongo:4.4
+    container_name: pokemon_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - pokemon_data:/data/db
+    networks:
+      - pokemon_network
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: pokemon_mongo_express
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=db
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin
+    ports:
+      - "8084:8081"
+    networks:
+      - pokemon_network
+    depends_on:
+      - db
+
+volumes:
+  pokemon_data:
+
+networks:
+  pokemon_network:

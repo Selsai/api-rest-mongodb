@@ -17,7 +17,7 @@ const { createFirstUser } = require('./src/db/create-first-user');
 const { createPokemons } = require('./src/db/create-pokemons');
 
 // Connexion MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/PokemonDB')  
+mongoose.connect(process.env.MONGODB_URI)  
   .then(() => {
     console.log('✅ MongoDB connecté');
     createFirstUser();
@@ -45,4 +45,6 @@ app.delete('/api/pokemons/:id', deletePokemon);
 
 app.use((req, res) => res.json({ message: 'notfound' }));
 
-app.listen(3000, () => console.log('🚀 App listening on port 3000'));
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => console.log(`🚀 App listening on port ${PORT}`));
