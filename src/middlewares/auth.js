@@ -3,15 +3,15 @@ const private_key = require('../auth/private_key');
 
 const authMdlr = (req, res, next) => {
   const tokenString = req.headers.authorization;
-  const token = tokenString.startsWith('Bearer ')
-  ? tokenString.slice(7)
-  : tokenString;
 
-
-  if (!token) {
+  if (!tokenString) {
     const message = "Vous n'avez pas fourni de jeton d'authentification. Ajoutez-en un dans l'en-tête Authorization.";
     return res.status(401).json({ message });
   }
+
+  const token = tokenString.startsWith('Bearer ')
+    ? tokenString.slice(7)
+    : tokenString;
 
   jwt.verify(token, private_key, (error, decodedToken) => {
     if (error) {
